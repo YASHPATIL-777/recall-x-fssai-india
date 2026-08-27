@@ -6,6 +6,17 @@
 
 **RECALL//X** is an end-to-end, event-driven Data Engineering and Analytics console that ingests, streams, deduplicates, and visualizes official Indian Food Safety and Standards Authority (FSSAI) Food Recall Notices in real time. Features a **Terminal Noir** observability dashboard backed by Apache Kafka, PySpark, PostgreSQL, Apache Airflow, and FastAPI.
 
+🖥️ RECALL//X Dashboard
+<img width="1917" height="935" alt="image" src="https://github.com/user-attachments/assets/2061fd0a-d255-4aa3-a7fd-e45006e69384" />
+🔎 Recall Search & Monitoring 
+<img width="1571" height="868" alt="image" src="https://github.com/user-attachments/assets/1a23dad3-a8e8-4faf-b2ef-9f5c1f9a669b" />
+📋 Recall Intelligence & Data View
+<img width="1747" height="887" alt="image" src="https://github.com/user-attachments/assets/c2c4d02d-d93f-47af-8db6-d3c0990268c5" />
+🧩 Pipeline Architecture Modal  
+<img width="1667" height="942" alt="image" src="https://github.com/user-attachments/assets/27a61d0a-6803-4e78-b204-42acbabed52c" />
+⚙️ Apache Airflow DAG
+<img width="1898" height="970" alt="image" src="https://github.com/user-attachments/assets/80b157cf-d719-4e97-85db-0daa60dba01e" />
+
 ---
 
 ## 🏗️ Architecture Flow
