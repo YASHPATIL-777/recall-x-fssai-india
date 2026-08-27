@@ -14,8 +14,8 @@ dist/
 downloads/
 eggs/
 .eggs/
-lib/
-lib64/
+/lib/
+/lib64/
 parts/
 sdist/
 var/
@@ -173,4 +173,17 @@ logs/
 
 # Runtime state & tracking
 data/last_processed.json
+data/*.db
+*.db
+
+# Node & Frontend
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+frontend/.vercel/
+.vercel/
+
+# Scratch & temporary artifacts
+scratch/
 

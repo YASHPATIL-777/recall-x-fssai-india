@@ -1,7 +1,7 @@
 import os
 
 # API params
-PATH_LAST_PROCESSED = "./data/last_processed.json"
+PATH_LAST_PROCESSED = os.getenv("CHECKPOINT_FILE", "./data/last_processed.json")
 MAX_LIMIT = 100
 MAX_OFFSET = 10000
 
@@ -12,13 +12,21 @@ MAX_OFFSET = 10000
 URL_API = "https://data.economie.gouv.fr/api/explore/v2.1/catalog/datasets/rappelconso-v2-gtin-trie/records?limit={}&where=date_publication%20%3E%20'{}'&order_by=date_publication%20ASC&offset={}"
 URL_API = URL_API.format(MAX_LIMIT, "{}", "{}")
 
-# POSTGRES PARAMS
+# KAFKA PARAMS
+KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS", "kafka:9092")
 
-POSTGRES_URL = "jdbc:postgresql://postgres:5432/airflow"
+# POSTGRES PARAMS
+PG_HOST = os.getenv("PGHOST", "postgres")
+PG_PORT = os.getenv("PGPORT", "5432")
+PG_DATABASE = os.getenv("PGDATABASE", "airflow")
+PG_USER = os.getenv("PGUSER", "airflow")
+PG_PASSWORD = os.getenv("PGPASSWORD", "airflow")
+
+POSTGRES_URL = f"jdbc:postgresql://{PG_HOST}:{PG_PORT}/{PG_DATABASE}"
 
 POSTGRES_PROPERTIES = {
-    "user": "airflow",
-    "password": "airflow",
+    "user": PG_USER,
+    "password": PG_PASSWORD,
     "driver": "org.postgresql.Driver",
 }
 
@@ -56,3 +64,25 @@ COLUMNS_TO_KEEP = [
     "date_de_fin_de_la_procedure_de_rappel",
 ]
 DB_FIELDS = COLUMNS_TO_KEEP + COLUMNS_TO_NORMALIZE + NEW_COLUMNS
+
+# INDIA FSSAI PIPELINE PARAMS
+INDIA_KAFKA_TOPIC = os.getenv("INDIA_KAFKA_TOPIC", "india_food_recalls")
+INDIA_DB_TABLE = os.getenv("INDIA_DB_TABLE", "india_food_recalls_table")
+INDIA_EXCEL_PATH = os.getenv("INDIA_EXCEL_PATH", "./data/india_food_recalls.xlsx")
+
+INDIA_DB_FIELDS = [
+    "recall_id",
+    "sr_no",
+    "fbo_name",
+    "brand_name",
+    "batch_lot_no",
+    "product_name",
+    "reason_for_recall",
+    "recall_start_date",
+    "recall_status",
+    "recall_termination_date",
+    "license_registration_no",
+    "license_type",
+    "nature_of_recall",
+]
+

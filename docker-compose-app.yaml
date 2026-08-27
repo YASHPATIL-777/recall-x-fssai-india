@@ -1,0 +1,39 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: rappel-conso/backend:latest
+    container_name: de-project-backend
+    restart: always
+    ports:
+      - "8001:8000"
+    environment:
+      PGHOST: postgres
+      PGPORT: "5432"
+      PGDATABASE: airflow
+      PGUSER: airflow
+      PGPASSWORD: airflow
+      CORS_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
+    networks:
+      - airflow-kafka
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    image: rappel-conso/frontend:latest
+    container_name: de-project-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      NEXT_PUBLIC_API_BASE_URL: "http://localhost:8001"
+    depends_on:
+      - backend
+    networks:
+      - airflow-kafka
+
+networks:
+  airflow-kafka:
+    external: true

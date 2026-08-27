@@ -66,6 +66,14 @@ x-airflow-common:
     # See https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/logging-monitoring/check-health.html#scheduler-health-check-server
     # yamllint enable rule:line-length
     AIRFLOW__SCHEDULER__ENABLE_HEALTH_CHECK: 'true'
+    # Project & Service environment variables
+    PGHOST: postgres
+    PGPORT: '5432'
+    PGDATABASE: airflow
+    PGUSER: airflow
+    PGPASSWORD: airflow
+    KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+    CHECKPOINT_FILE: /opt/airflow/data/last_processed.json
     # WARNING: Use _PIP_ADDITIONAL_REQUIREMENTS option ONLY for a quick checks
     # for other purpose (development, test and especially production usage) build/extend Airflow image.
     _PIP_ADDITIONAL_REQUIREMENTS: ${_PIP_ADDITIONAL_REQUIREMENTS:-}

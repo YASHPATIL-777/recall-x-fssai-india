@@ -2,6 +2,7 @@ services:
 
   kafka:
     image: 'soldevelo/kafka:latest'
+    restart: always
 
     ports:
       - '9094:9094'
@@ -27,6 +28,7 @@ services:
   kafka-ui:
     container_name: kafka-ui-1
     image: provectuslabs/kafka-ui:latest
+    restart: always
 
     ports:
       - '8000:8080'
@@ -44,6 +46,7 @@ services:
 
   docker-proxy:
     image: alpine/socat
+    restart: always
 
     command: "TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock"
 
