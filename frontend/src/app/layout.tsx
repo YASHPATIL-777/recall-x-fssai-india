@@ -15,7 +15,8 @@ export const metadata: Metadata = {
     "Airflow",
     "FastAPI",
     "Next.js",
-    "RappelConso API",
+    "FSSAI India API",
+    "FSSAI Food Recalls",
   ],
 };
 

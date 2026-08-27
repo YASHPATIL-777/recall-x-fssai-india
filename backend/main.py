@@ -251,12 +251,13 @@ def list_recalls(
 
         allowed_sort_fields = {
             "recall_start_date": "recall_start_date",
-            "date_de_publication": "recall_start_date",
             "product_name": "product_name",
             "brand_name": "brand_name",
             "fbo_name": "fbo_name",
             "recall_id": "recall_id",
-            "reference_fiche": "recall_id",
+            "recall_status": "recall_status",
+            "license_type": "license_type",
+            "nature_of_recall": "nature_of_recall",
         }
         sort_column = allowed_sort_fields.get(str(sort_by).lower(), "recall_start_date")
         direction = "ASC" if str(sort_order).upper() == "ASC" else "DESC"

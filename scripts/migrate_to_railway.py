@@ -1,5 +1,5 @@
 """
-Migration / Seeding Script for Railway PostgreSQL.
+Migration / Seeding Script for Railway PostgreSQL (FSSAI India Food Recalls).
 
 Usage:
     python scripts/migrate_to_railway.py "<TARGET_DATABASE_URL>"
@@ -14,58 +14,57 @@ import requests
 import psycopg2
 from psycopg2.extras import execute_values
 
-# 25 DB Fields matching rappel_conso_table
+DB_TABLE = "india_food_recalls_table"
+
 DB_FIELDS = [
-    "reference_fiche",
-    "liens_vers_les_images",
-    "lien_vers_la_liste_des_produits",
-    "lien_vers_la_liste_des_distributeurs",
-    "lien_vers_affichette_pdf",
-    "lien_vers_la_fiche_rappel",
-    "date_de_publication",
-    "date_de_fin_de_la_procedure_de_rappel",
-    "categorie_de_produit",
-    "sous_categorie_de_produit",
-    "nom_de_la_marque_du_produit",
-    "noms_des_modeles_ou_references",
-    "identification_des_produits",
-    "conditionnements",
-    "temperature_de_conservation",
-    "zone_geographique_de_vente",
-    "distributeurs",
-    "motif_du_rappel",
-    "numero_de_contact",
-    "modalites_de_compensation",
-    "risques_pour_le_consommateur",
-    "recommandations_sante",
-    "date_debut_commercialisation",
-    "date_fin_commercialisation",
-    "informations_complementaires",
+    "recall_id",
+    "sr_no",
+    "fbo_name",
+    "brand_name",
+    "batch_lot_no",
+    "product_name",
+    "reason_for_recall",
+    "recall_start_date",
+    "recall_status",
+    "recall_termination_date",
+    "license_registration_no",
+    "license_type",
+    "nature_of_recall",
 ]
 
 
 def create_schema_in_target(target_conn):
-    """Creates the rappel_conso_table in the target Railway database."""
+    """Creates the india_food_recalls_table in the target Railway database."""
     print("--> [1/3] Creating table schema and indexes in Railway PostgreSQL...")
-    columns_sql = ",\n    ".join(
-        [f"{col} VARCHAR(255) PRIMARY KEY" if col == "reference_fiche" else f"{col} TEXT" for col in DB_FIELDS]
-    )
     create_sql = f"""
-    CREATE TABLE IF NOT EXISTS rappel_conso_table (
-        {columns_sql}
+    CREATE TABLE IF NOT EXISTS {DB_TABLE} (
+        recall_id VARCHAR(255) PRIMARY KEY,
+        sr_no INT,
+        fbo_name TEXT,
+        brand_name TEXT,
+        batch_lot_no TEXT,
+        product_name TEXT,
+        reason_for_recall TEXT,
+        recall_start_date DATE,
+        recall_status VARCHAR(50),
+        recall_termination_date DATE,
+        license_registration_no TEXT,
+        license_type VARCHAR(50),
+        nature_of_recall VARCHAR(100)
     );
-    CREATE INDEX IF NOT EXISTS idx_rappel_date ON rappel_conso_table (date_de_publication);
-    CREATE INDEX IF NOT EXISTS idx_rappel_category ON rappel_conso_table (categorie_de_produit);
+    CREATE INDEX IF NOT EXISTS idx_india_recall_date ON {DB_TABLE} (recall_start_date);
+    CREATE INDEX IF NOT EXISTS idx_india_recall_status ON {DB_TABLE} (recall_status);
+    CREATE INDEX IF NOT EXISTS idx_india_license_type ON {DB_TABLE} (license_type);
     """
     with target_conn.cursor() as cur:
         cur.execute(create_sql)
     target_conn.commit()
-    print("    [OK] Table 'rappel_conso_table' & indexes created.")
+    print(f"    [OK] Table '{DB_TABLE}' & indexes created.")
 
 
 def migrate_data(target_url: str, local_api_url: str = "http://localhost:8001"):
-    """Fetches records from local stack and streams them in batches into Railway PostgreSQL."""
-    print(f"--> [2/3] Connecting to Railway Database...")
+    """Fetches records from local stack and streams them into Railway PostgreSQL."""
+    print("--> [2/3] Connecting to Railway Database...")
     target_conn = psycopg2.connect(target_url)
 
     try:
@@ -73,7 +72,6 @@ def migrate_data(target_url: str, local_api_url: str = "http://localhost:8001"):
 
         print(f"--> [3/3] Streaming records from local backend ({local_api_url})...")
         
-        # Test first page
         res0 = requests.get(f"{local_api_url}/api/recalls?page=1&page_size=100").json()
         total_records = res0.get("total", 0)
         total_pages = res0.get("total_pages", 0)
@@ -81,9 +79,9 @@ def migrate_data(target_url: str, local_api_url: str = "http://localhost:8001"):
 
         cols = DB_FIELDS
         insert_sql = f"""
-        INSERT INTO rappel_conso_table ({", ".join(cols)})
+        INSERT INTO {DB_TABLE} ({", ".join(cols)})
         VALUES %s
-        ON CONFLICT (reference_fiche) DO NOTHING;
+        ON CONFLICT (recall_id) DO NOTHING;
         """
 
         total_migrated = 0
@@ -105,9 +103,8 @@ def migrate_data(target_url: str, local_api_url: str = "http://localhost:8001"):
 
         print(f"\n    [OK] All {total_migrated} records synced successfully!")
 
-        # Verify final count in target
         with target_conn.cursor() as cur:
-            cur.execute("SELECT COUNT(*) FROM rappel_conso_table;")
+            cur.execute(f"SELECT COUNT(*) FROM {DB_TABLE};")
             verified_count = cur.fetchone()[0]
             print(f"\n[SUCCESS] Migration Complete! Railway Database verified count: {verified_count} records.")
 

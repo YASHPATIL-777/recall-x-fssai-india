@@ -56,11 +56,11 @@ export const RecallTable: React.FC<RecallTableProps> = ({ recalls, onSelect }) =
             const statusStyle = getStatusStyle(recall.recall_status);
             const licenseStyle = getLicenseStyle(recall.license_type);
 
-            const recallId = recall.recall_id || recall.reference_fiche || `ID-${recall.sr_no}`;
-            const productName = recall.product_name || recall.noms_des_modeles_ou_references || "UNSPECIFIED PRODUCT";
+            const recallId = recall.recall_id || `ID-${recall.sr_no}`;
+            const productName = recall.product_name || "UNSPECIFIED PRODUCT";
             const fboName = recall.fbo_name || "UNSPECIFIED FBO";
-            const brandName = formatNullField(recall.brand_name || recall.nom_de_la_marque_du_produit);
-            const startDate = recall.recall_start_date || recall.date_de_publication;
+            const brandName = formatNullField(recall.brand_name);
+            const startDate = recall.recall_start_date;
 
             return (
               <tr

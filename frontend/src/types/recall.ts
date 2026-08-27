@@ -12,15 +12,6 @@ export interface Recall {
   license_registration_no: string;
   license_type: string; // State License | Central License
   nature_of_recall: string; // Initiated by Authority | Initiated by FBO
-
-  // Backward compatibility optional aliases
-  reference_fiche?: string;
-  categorie_de_produit?: string | null;
-  nom_de_la_marque_du_produit?: string | null;
-  noms_des_modeles_ou_references?: string | null;
-  motif_du_rappel?: string | null;
-  date_de_publication?: string | null;
-  risques_pour_le_consommateur?: string | null;
 }
 
 export interface SummaryStats {

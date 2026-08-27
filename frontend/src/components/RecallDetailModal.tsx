@@ -52,8 +52,8 @@ export const RecallDetailModal: React.FC<RecallDetailModalProps> = ({
   const licenseStyle = getLicenseStyle(recall.license_type);
   const natureStyle = getNatureStyle(recall.nature_of_recall);
 
-  const recallId = recall.recall_id || recall.reference_fiche || `ID-${recall.sr_no}`;
-  const productName = recall.product_name || recall.noms_des_modeles_ou_references || "UNSPECIFIED PRODUCT";
+  const recallId = recall.recall_id || `ID-${recall.sr_no}`;
+  const productName = recall.product_name || "UNSPECIFIED PRODUCT";
   const fboName = recall.fbo_name || "UNSPECIFIED FBO";
 
   return (

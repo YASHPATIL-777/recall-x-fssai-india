@@ -19,12 +19,12 @@ export const RecallCard: React.FC<RecallCardProps> = ({ recall, onSelect }) => {
   const statusStyle = getStatusStyle(recall.recall_status);
   const licenseStyle = getLicenseStyle(recall.license_type);
 
-  const productName = recall.product_name || recall.noms_des_modeles_ou_references || "UNSPECIFIED PRODUCT";
+  const productName = recall.product_name || "UNSPECIFIED PRODUCT";
   const fboName = recall.fbo_name || "UNSPECIFIED FBO";
-  const brandName = formatNullField(recall.brand_name || recall.nom_de_la_marque_du_produit);
-  const reasonText = formatNullField(recall.reason_for_recall || recall.motif_du_rappel, "Reason not specified");
-  const recallId = recall.recall_id || recall.reference_fiche || `ID-${recall.sr_no}`;
-  const startDate = recall.recall_start_date || recall.date_de_publication;
+  const brandName = formatNullField(recall.brand_name);
+  const reasonText = formatNullField(recall.reason_for_recall, "Reason not specified");
+  const recallId = recall.recall_id || `ID-${recall.sr_no}`;
+  const startDate = recall.recall_start_date;
 
   return (
     <div

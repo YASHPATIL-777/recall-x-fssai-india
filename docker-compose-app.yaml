@@ -3,7 +3,7 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
-    image: rappel-conso/backend:latest
+    image: recall-x/backend:latest
     container_name: de-project-backend
     restart: always
     ports:
@@ -22,7 +22,7 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
-    image: rappel-conso/frontend:latest
+    image: recall-x/frontend:latest
     container_name: de-project-frontend
     restart: always
     ports:
